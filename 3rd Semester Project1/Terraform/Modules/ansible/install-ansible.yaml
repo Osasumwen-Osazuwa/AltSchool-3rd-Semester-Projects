@@ -1,0 +1,27 @@
+---
+- name: Install Ansible
+  hosts: target_group
+  become: true  
+
+  tasks:
+    - name: Update apt package cache (for Ubuntu)
+      apt:
+        update_cache: yes
+      when: ansible_os_family == 'Ubuntu'
+
+    - name: Install required packages
+      package:
+        name:
+          - software-properties-common  
+      become: true
+      when: ansible_os_family == 'Ubuntu'
+
+    - name: Install Ansible
+      package:
+        name: ansible
+      become: true
+
+    
+
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"  # Path to Python interpreter on the target machine
